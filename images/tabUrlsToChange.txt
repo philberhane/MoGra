@@ -1,0 +1,10 @@
+https://anima-uploads.s3.amazonaws.com/projects/5cdda6b85ffb44000a194e77/releases/5cdda81a5ffb4400098adfa3/img/main-sensors-pop2-rectangle-copy-2@2x.png to images/maroonBlock.png
+
+https://anima-uploads.s3.amazonaws.com/projects/5cdda6b85ffb44000a194e77/releases/5cdda81a5ffb4400098adfa3/img/main-pop-work4-rectangle-copy@2x.png to images/newTab.png
+
+https://anima-uploads.s3.amazonaws.com/projects/5cdda6b85ffb44000a194e77/releases/5cdda81a5ffb4400098adfa3/img/main-event-pop-table-row-copy.png to images/newTab.png
+
+
+121,201,15 to 107,28,44
+
+look for line4 and line4copy and delete
