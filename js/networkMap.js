@@ -51,6 +51,7 @@ var defs = svg.defs();
 
 var arrayOfPaths = []
 var compareArray = []
+var pathArray = []
 
 var readJsonData
 var dbJsonData
@@ -85,7 +86,9 @@ $.ajax({
           ip2: data.mogra_event.alerts[i].end_point_2,
           criticality: data.mogra_event.alerts[i].alert_level,
 user: data.mogra_event.alerts[i].user,
-temperature: data.mogra_event.alerts[i].metrics.temperature
+temperature: data.mogra_event.alerts[i].metrics.temperature,
+alertName: data.mogra_event.alerts[i].description,
+details: data.mogra_event.alerts[i].details
         }
         arrayOfEndpointObjects.push(object1)
         arrayOfEndpointObjects.push(object2)
@@ -169,7 +172,9 @@ temperature: data.mogra_event.alerts[i].metrics.temperature
         ip2: data.mogra_event.alerts[i].end_point_2,
         criticality: data.mogra_event.alerts[i].alert_level,
 user: data.mogra_event.alerts[i].user,
-temperature: data.mogra_event.alerts[i].metrics.temperature
+temperature: data.mogra_event.alerts[i].metrics.temperature,
+alertName: data.mogra_event.alerts[i].description,
+details: data.mogra_event.alerts[i].details
       }
       arrayOfEndpointObjects.push(object1)
       arrayOfEndpointObjects.push(object2)
@@ -193,8 +198,8 @@ temperature: data.mogra_event.alerts[i].metrics.temperature
         criticality: data.mogra_event.alerts[i].alert_level,
         user: data.mogra_event.alerts[i].user,
         temperature: data.mogra_event.alerts[i].metrics.temperature,
-        alertName: data.mogra_event.alerts[i].metrics.description,
-        details: data.mogra_event.alerts[i].metrics.details
+        alertName: data.mogra_event.alerts[i].description,
+        details: data.mogra_event.alerts[i].details
       }
       arrayOfEndpointObjects.push(object1)
       arrayOfEndpointObjects.push(object2)
@@ -351,13 +356,20 @@ compareArray = arrayOfConnections
           var ip2 = arrayOfConnections[i].ip2
           var temperature = arrayOfConnections[i].temperature
 
+          var g0 = nodes.group().translate(getPos(twoConnections[0]).x, getPos(twoConnections[0]).y)
+          g0.circle(50).fill("#C2185B").opacity(0.0);
+
+
+
 
         if (twoConnections[0].className.split(' ')[0] === 'sensor') {
-          var g1 = nodes.group().translate(getPos(twoConnections[0]).x, getPos(twoConnections[0]).y+(50*i))
+          var heigh
+          if (i===0) {heigh = 100}
+          var g1 = nodes.group().translate(getPos(twoConnections[0]).x+75, getPos(twoConnections[0]).y+(65*(i+1)))
           g1.circle(50).fill("#C2185B").opacity(0.4);
           //console.log(g1.node.children[0])
           var sensorIndex = sensorArray.indexOf(twoConnections[0].id);
-          g1.node.innerHTML = '<image alt="'+arrayOfConnections[i].ip2+'"  onmouseover="popup(this)" onmouseout="popDown(this)" xlink:href="images/sensor(notMaroon).png" height="50" width="50"/>'
+          g1.node.innerHTML = '<image onClick="fade3(this)" style="cursor: pointer" alt="'+arrayOfConnections[i].ip2+'"  onmouseover="popup(this)" onmouseout="popDown(this)" xlink:href="images/sensor(notMaroon).png" height="50" width="50"/>'
           g1.node.innerHTML += '<text x="'+3+'" y="'+40+'" style="padding-top: 50px; font-size:12px" fill="white">'+'Sensor '+ (sensorIndex+1) +'</text>'
           g1.node.innerHTML += '<rect style="display:none" x="-75" y="-70" width="196" height="78" stroke="red" fill="white"></rect>'
           g1.node.innerHTML += '<text style="display:none" x="-65" y="-40" font-size:12px">IP: '+arrayOfConnections[i].ip2+'</text>'
@@ -398,7 +410,7 @@ compareArray = arrayOfConnections
 
         } else if (twoConnections[1].className.split(' ')[0] === 'workstation') {
           var workstationIndex = workstationArray.indexOf(twoConnections[1].id);
-          var g2 = nodes.group().translate(getPos(twoConnections[1]).x, getPos(twoConnections[1]).y)
+          var g2 = nodes.group().translate(getPos(twoConnections[1]).x, getPos(twoConnections[1]).y+50)
           g2.circle(50).fill("#C2185B").opacity(0.4);
           //console.log(g1.node.children[0])
           g2.node.innerHTML = '<image style="cursor:pointer" alt="'+arrayOfConnections[i].ip1+'" id="thisisatest" onclick="fade(this)" onmouseover="popup(this)" onmouseout="popDown(this)" xlink:href="images/workstation(grey).png" height="100" width="72"/>'
@@ -408,10 +420,10 @@ compareArray = arrayOfConnections
           g2.node.innerHTML += '<text style="display:none" x="-45" y="0" font-size:12px">IP: '+arrayOfConnections[i].ip1+'</text>'
         } else {
           var externalIndex = externalEntityArray.indexOf(twoConnections[1].id);
-          var g2 = nodes.group().translate(getPos(twoConnections[1]).x, getPos(twoConnections[1]).y)
+          var g2 = nodes.group().translate(getPos(twoConnections[1]).x, getPos(twoConnections[1]).y+50)
           g2.circle(50).fill("#C2185B").opacity(0.4);
           //console.log(g1.node.children[0])
-          g2.node.innerHTML = '<image style="cursor:pointer" alt="'+arrayOfConnections[i].ip1+'" id="thisisatest" onclick="fade(this)" onmouseover="popup(this)" onmouseout="popDownExternal(this)" xlink:href="images/externalGrey.png" height="75" width="75"/>'
+          g2.node.innerHTML = '<image style="cursor:pointer" alt="'+arrayOfConnections[i].ip1+'" id="thisisatest" onclick="fade2(this)" onmouseover="popupExternal(this)" onmouseout="popDownExternal(this)" xlink:href="images/externalGrey.png" height="75" width="75"/>'
           g2.node.innerHTML += '<text x="'+2+'" y="'+60+'" style="padding-top: 50px; font-size:12px" fill="white">External Entity</text>'
           g2.node.innerHTML += '<text x="'+35+'" y="'+72+'" style="padding-top: 50px; font-size:12px" fill="white">'+(externalIndex+1)+'</text>'
           g2.node.innerHTML += '<rect style="display:none" x="-55" y="-50" width="196" height="78" stroke="red" fill="white"></rect>'
@@ -441,20 +453,33 @@ compareArray = arrayOfConnections
 
         for (h=0;h<document.querySelectorAll("path").length; h++) {
           if (document.querySelectorAll("path")[h].attributes.length > 2){
+            if (document.querySelectorAll('path')[i].getAttribute('d').split(' ').length > 3) {
             if (document.querySelectorAll("path")[(h+i)]) {
             console.log(document.querySelectorAll("path")[(h+i)])
             document.querySelectorAll("path")[(h+i)].setAttribute('onmouseover', 'popupConnection(this)')
-            document.querySelectorAll("path")[(h+i)].setAttribute('onmouseout', 'popupConnection(this)')
+            document.querySelectorAll("path")[(h+i)].setAttribute('onmouseout', 'popDownConnection(this)')
+            document.querySelectorAll("path")[(h+i)].setAttribute('alt', i)
             arrayOfPaths.push(document.querySelectorAll("path")[(h+i)])
+            var captionCoord = document.querySelectorAll("path")[(h+i)].getAttribute('d').split(' ')
+            console.log(captionCoord)
+            var g11 = nodes.group().translate(captionCoord[8], captionCoord[2])
+            g11.circle(50).fill("#C2185B")
+          //  M771 100C771 120 771 120 527.5 127.5C284 135 284 135 284 155
+          console.log(arrayOfConnections[i])
+            g11.node.innerHTML = '<rect style="display: none" width="225" height="78" stroke="red" fill="white" alt="'+i+'"></rect>'
+            g11.node.innerHTML += '<text style="display: none; font-size: 12px" x="0" y="25" >Alert Name: '+ arrayOfConnections[i].alertName +'</text>'
+            g11.node.innerHTML += '<text style="display: none; font-size: 12px" x="0" y="50" >Details: '+ arrayOfConnections[i].details +'</text>'
             // var g3 = nodes.group().translate(getPos(document.querySelectorAll("path")[(h+i)]).x, getPos(document.querySelectorAll("path")[(h+i)]).y)
             // var d = document.querySelectorAll("path")[(h+i)].getAttribute('d')
             // g3.innerHTML = '<text d="'+document.querySelectorAll("path")[(h+i)]+'" >This is a test</text>'
           }
-
+        }
             //console.log('yee')
           }
         }
 console.log(arrayOfPaths)
+
+
 
 
       }
@@ -471,6 +496,16 @@ console.log(arrayOfPaths)
       document.querySelector('.main1').style.marginLeft = '200px'
       document.querySelector('.main1').style.marginTop = '200px'
       document.querySelector('.main1').style.width = '100%'
+
+      for (i=0;i<arrayOfPaths.length;i++){
+  if (arrayOfPaths[i].getAttribute('d').split(' ').length > 3){
+    pathArray.push(arrayOfPaths[i])
+    }
+  }
+
+  for (i=0;i<pathArray.length;i++) {
+    compareArray[i].path = pathArray[i]
+  }
 
 
 
@@ -561,11 +596,33 @@ function toggleFilters() {
 
 
 function popupConnection(user) {
-  console.log(user)
+  var arrayOfRect = document.querySelectorAll('rect')
+  for (i=0;i<arrayOfRect.length;i++) {
+    for (j=i+1;j<arrayOfRect.length;j++) {
+      if (arrayOfRect[i].getAttribute('alt') === arrayOfRect[j].getAttribute('alt') && j!==k) {
+        arrayOfRect[j].setAttribute('alt', 'eiowfnioEWIOFEIWLNFEUIFNVEIJREIJVNK')
+      }
+    }
+  }
+  for (i=0;i<arrayOfRect.length; i++) {
+    if (user.getAttribute('alt') === document.querySelectorAll('rect')[i].getAttribute('alt')) {
+      document.querySelectorAll('rect')[i].style.display = 'block'
+      document.querySelectorAll('rect')[i].nextElementSibling.style.display = 'block'
+      document.querySelectorAll('rect')[i].nextElementSibling.nextElementSibling.style.display = 'block'
+    }
+  }
 }
 
+
+
 function popDownConnection(user) {
-  console.log(user)
+  for (i=0;i<document.querySelectorAll('rect').length; i++) {
+    if (user.getAttribute('alt') === document.querySelectorAll('rect')[i].getAttribute('alt')) {
+      document.querySelectorAll('rect')[i].style.display = 'none'
+      document.querySelectorAll('rect')[i].nextElementSibling.style.display = 'none'
+      document.querySelectorAll('rect')[i].nextElementSibling.nextElementSibling.style.display = 'none'
+    }
+  }
 }
 
 
@@ -583,6 +640,12 @@ function popDown(user) {
   user.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.style.display = 'none'
 }
 
+function popupExternal(user) {
+  user.nextElementSibling.nextElementSibling.nextElementSibling.style.display = 'block'
+  user.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.style.display = 'block'
+  user.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.style.display = 'block'
+}
+
 function popDownExternal(user) {
   user.nextElementSibling.nextElementSibling.nextElementSibling.style.display = 'none'
   user.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.style.display = 'none'
@@ -590,17 +653,20 @@ function popDownExternal(user) {
 }
 // and then change seconds variable to 10000000 whenever something is clicked on
 
-// var seconds = 0
-//
-// function refresh(seconds){
-//   setTimeout(function(){
-//    window.location.reload(1);
-// }, seconds);
-// }
-//
-// setTimeout(function(){
-// refresh(seconds)
-// }, 5000);
+
+var seconds = 5000
+
+function refresh(seconds){
+  setTimeout(function(){
+   window.location.reload(1);
+}, seconds);
+}
+
+setTimeout(function(){
+refresh(seconds)
+}, 5000);
+
+
 
 
 function filterFunction() {
@@ -625,6 +691,8 @@ function test() {
 }
 
 function fade(user) {
+  var ip = user.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.innerHTML.split(' ')[1]
+  var arrayOfConnected = []
   var queries = document.querySelectorAll('image')
   var count = 0
   for (i=0;i<queries.length;i++) {
@@ -639,20 +707,30 @@ function fade(user) {
         queries[i].style.opacity = '1'
       }
     }
+
+    for (i=0;i<compareArray.length;i++) {
+      if (compareArray[i].path.style.opacity === '0.4') {
+        compareArray[i].path.style.opacity = '1'
+      }
+    }
+    seconds = 1000000
+
   } else {
+    seconds = 5000
 
     for (i=0;i<queries.length;i++) {
       queries[i].style.opacity = '0.4'
     }
 
     //document.body.style.opacity = '0.4'
-    var ip = user.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.innerHTML.split(' ')[1]
-    var arrayOfConnected = []
+
+
     for (i=0;i<compareArray.length;i++) {
       if (ip === compareArray[i].ip1) {
         arrayOfConnected.push(compareArray[i].ip2)
       }
     }
+    console.log(arrayOfConnected)
 
     for (i=0; i<arrayOfConnected.length;i++) {
       for (j=0;j<queries.length;j++) {
@@ -662,8 +740,144 @@ function fade(user) {
         }
       }
     }
+
+    // Compare ip to compareArray
+    for (i=0;i<compareArray.length;i++) {
+      if (ip === compareArray[i].ip1) {
+        compareArray[i].path.style.opacity = '1'
+      } else {
+        compareArray[i].path.style.opacity = '0.4'
+      }
+    }
 }
 }
+
+
+function fade2(user) {
+  var ip = user.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.innerHTML.split(' ')[1]
+  var arrayOfConnected = []
+  var queries = document.querySelectorAll('image')
+  var count = 0
+  for (i=0;i<queries.length;i++) {
+    if (queries[i].style.opacity === '0.4') {
+      count+=1
+    }
+  }
+
+  if (count > 0) {
+    for (i=0;i<queries.length;i++) {
+      if (queries[i].style.opacity === '0.4') {
+        queries[i].style.opacity = '1'
+      }
+    }
+
+    for (i=0;i<compareArray.length;i++) {
+      if (compareArray[i].path.style.opacity === '0.4') {
+        compareArray[i].path.style.opacity = '1'
+      }
+    }
+    seconds = 1000000
+
+  } else {
+    seconds = 5000
+
+    for (i=0;i<queries.length;i++) {
+      queries[i].style.opacity = '0.4'
+    }
+
+    //document.body.style.opacity = '0.4'
+
+
+    for (i=0;i<compareArray.length;i++) {
+      if (ip === compareArray[i].ip1) {
+        arrayOfConnected.push(compareArray[i].ip2)
+      }
+    }
+    console.log(arrayOfConnected)
+
+    for (i=0; i<arrayOfConnected.length;i++) {
+      for (j=0;j<queries.length;j++) {
+
+        if (arrayOfConnected[i] === queries[j].getAttribute('alt') || ip === queries[j].getAttribute('alt')) {
+          queries[j].style.opacity = '1'
+        }
+      }
+    }
+
+    // Compare ip to compareArray
+    for (i=0;i<compareArray.length;i++) {
+      if (ip === compareArray[i].ip1) {
+        compareArray[i].path.style.opacity = '1'
+      } else {
+        compareArray[i].path.style.opacity = '0.4'
+      }
+    }
+}
+}
+
+function fade3(user) {
+  var ip = user.nextElementSibling.nextElementSibling.nextElementSibling.innerHTML.split(' ')[1]
+  var arrayOfConnected = []
+  var queries = document.querySelectorAll('image')
+  var count = 0
+  for (i=0;i<queries.length;i++) {
+    if (queries[i].style.opacity === '0.4') {
+      count+=1
+    }
+  }
+
+  if (count > 0) {
+    for (i=0;i<queries.length;i++) {
+      if (queries[i].style.opacity === '0.4') {
+        queries[i].style.opacity = '1'
+      }
+    }
+
+    for (i=0;i<compareArray.length;i++) {
+      if (compareArray[i].path.style.opacity === '0.4') {
+        compareArray[i].path.style.opacity = '1'
+      }
+    }
+
+seconds = 1000000
+  } else {
+    seconds = 5000
+
+    for (i=0;i<queries.length;i++) {
+      queries[i].style.opacity = '0.4'
+    }
+
+    //document.body.style.opacity = '0.4'
+
+
+    for (i=0;i<compareArray.length;i++) {
+      if (ip === compareArray[i].ip2) {
+        arrayOfConnected.push(compareArray[i].ip1)
+      }
+    }
+    console.log(arrayOfConnected)
+
+    for (i=0; i<arrayOfConnected.length;i++) {
+      for (j=0;j<queries.length;j++) {
+
+        if (arrayOfConnected[i] === queries[j].getAttribute('alt') || ip === queries[j].getAttribute('alt')) {
+          queries[j].style.opacity = '1'
+        }
+      }
+    }
+
+    // Compare ip to compareArray
+    for (i=0;i<compareArray.length;i++) {
+      if (ip === compareArray[i].ip2) {
+        compareArray[i].path.style.opacity = '1'
+      } else {
+        compareArray[i].path.style.opacity = '0.4'
+      }
+    }
+}
+}
+
+document.getElementById('alertFilter').innerHTML += new Date();
 // var connectorInUse = nodes.use(connector)
 
 //document.querySelector('.main1').innerHTML = ''

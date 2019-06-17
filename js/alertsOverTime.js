@@ -261,9 +261,9 @@ document.querySelectorAll('.industrialnetworkm')[0].style.color = 'white'
                vAxis: {title: 'Number of Alerts By Criticality'},
                 legend: 'none',
                 series: {
-                     0: { pointShape: 'circle', color: 'rgb(141, 2, 31)' },
+                     0: {pointShape: 'circle', color: 'rgb(207,181,59)'},
                      1: {pointShape: 'circle', color: 'rgb(253, 95, 0)'},
-                     2: {pointShape: 'circle', color: 'rgb(207,181,59)'}
+                     2: { pointShape: 'circle', color: 'rgb(141, 2, 31)' }
                    },
                    backgroundColor: '#F1F1F1',
                    pointSize: 20

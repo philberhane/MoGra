@@ -91,7 +91,7 @@ td, th {
 th {
 	  background-color: rgba(107,28,44, 0.9);
     border-bottom: solid #6B1C2C;
-    font-size: 18px;
+    font-size: 16px;
     padding-top: 16px;
     padding-bottom: 16px;
     font-weight: bold;
@@ -104,7 +104,7 @@ tr {
 }
 
 td {
-  font-size: 18px;
+  font-size: 16px;
   padding-top: 16px;
   padding-bottom: 16px;
   border-bottom: none;
@@ -115,10 +115,11 @@ tr:nth-child(even) {
 }
 
 
-/* body{font-size: 1.5vh; }
+/*
 html, body, svg {
   height: 100%;
-}
+} */
+/*
 
 #svgContainer {
   z-index: -10;

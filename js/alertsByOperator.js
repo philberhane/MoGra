@@ -117,6 +117,7 @@ document.querySelector('.chart').style.display = 'block'
 }
 						 }
 						 }
+						 document.getElementById('currentDate').style.display = 'none'
 						 sessionStorage.clear()
 
 
@@ -389,3 +390,5 @@ document.querySelector('.chart').style.display = 'block'
 
 			 location.reload();
 			}
+
+			document.getElementById('alertFilter').innerHTML += '<div id="currentDate">'+new Date()+'</div>'
