@@ -1,0 +1,4 @@
+[05-Jun-2019 20:22:32 UTC] PHP Notice:  Undefined index: data in /home/e6wbesvq0ia5/public_html/mogra/json_write/mogra_event.php on line 4
+[05-Jun-2019 20:24:11 UTC] PHP Warning:  fwrite() expects parameter 2 to be string, array given in /home/e6wbesvq0ia5/public_html/mogra/json_write/mogra_event.php on line 5
+[05-Jun-2019 20:24:38 UTC] PHP Warning:  fwrite() expects parameter 2 to be string, array given in /home/e6wbesvq0ia5/public_html/mogra/json_write/mogra_event.php on line 5
+[05-Jun-2019 20:25:07 UTC] PHP Warning:  fwrite() expects parameter 2 to be string, array given in /home/e6wbesvq0ia5/public_html/mogra/json_write/mogra_event.php on line 5

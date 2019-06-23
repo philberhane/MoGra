@@ -1,9 +1,9 @@
 
-document.querySelector('.main1').style.display = 'block'
+
 document.querySelector('.hed').firstElementChild.nextElementSibling.innerHTML = '<img width="100%" src="images/logo.png" >'
+document.querySelector('.main1').style.display = 'block'
 
-
-document.querySelector('.box').innerHTML = '<div id="alertFilter"><div><h3 style="font-size: 17.5px; padding-top: 10px;">Criticality</h3><span style="width: 2px;height: 2px;background-color: rgb(141, 2, 31); color: rgb(141, 2, 31)">test</span> High <br> <span style="width: 2px;height: 2px;background-color: rgb(253, 95, 0); color: rgb(253, 95, 0)">test</span> Medium <br> <span style="width: 2px;height: 2px;background-color: rgb(207,181,59); color: rgb(207,181,59)">test</span> Low</div><div style="display: none;"><h3>Manufacturing Floor Event Viewer</h3><button style="cursor:pointer" id="toggleFiltersButton" onClick="toggleFilters()">Filter by Date / Time &#9662;</button><br><div id="toggleFilter" style="display: none"><p>Dates</p><input style="border-radius: 5px; border: 1px solid grey" type="date" id="date1"> - <input style="border-radius: 5px; border: 1px solid grey" type="date" id="date2"><br><p>Times</p><input style="border-radius: 5px; border: 1px solid grey" type="time" id="time1" > - <input style="border-radius: 5px; border: 1px solid grey" type="time" id="time2"> <br><button id="filterFunction" onClick="filterFunction()">GO</button></div></div></div>'
+document.querySelector('.box').innerHTML = '<div id="alertFilter"><div><h3 style="font-size: 17.5px; padding-top: 10px;">Criticality</h3><span style="width: 2px;height: 2px;background-color: #e52727; color: #e52727">test</span> High <br> <span style="width: 2px;height: 2px;background-color: rgb(253, 95, 0); color: rgb(253, 95, 0)">test</span> Medium <br> <span style="width: 2px;height: 2px;background-color: rgb(207,181,59); color: rgb(207,181,59)">test</span> Low</div><div style="display: none;"><h3>Manufacturing Floor Event Viewer</h3><button style="cursor:pointer" id="toggleFiltersButton" onClick="toggleFilters()">Filter by Date / Time &#9662;</button><br><div id="toggleFilter" style="display: none"><p>Dates</p><input style="border-radius: 5px; border: 1px solid grey" type="date" id="date1"> - <input style="border-radius: 5px; border: 1px solid grey" type="date" id="date2"><br><p>Times</p><input style="border-radius: 5px; border: 1px solid grey" type="time" id="time1" > - <input style="border-radius: 5px; border: 1px solid grey" type="time" id="time2"> <br><button id="filterFunction" onClick="filterFunction()">GO</button></div></div></div>'
 document.getElementById('alertFilter').firstElementChild.nextElementSibling.style.fontSize = '17.5px'
 document.getElementById('alertFilter').firstElementChild.nextElementSibling.style.paddingTop = '20px'
 document.querySelectorAll('.industrialnetworkm')[4].style.color = 'white'
@@ -342,7 +342,7 @@ compareArray = arrayOfConnections
         console.log(arrayOfConnections[i])
         var color
         if (arrayOfConnections[i].criticality === 'high') {
-          color = 'rgb(141, 2, 31)'
+          color = '#e52727'
         } else if (arrayOfConnections[i].criticality === 'medium') {
           color = 'rgb(253, 95, 0)'
         } else if (arrayOfConnections[i].criticality === 'low') {
@@ -370,10 +370,10 @@ compareArray = arrayOfConnections
           //console.log(g1.node.children[0])
           var sensorIndex = sensorArray.indexOf(twoConnections[0].id);
           g1.node.innerHTML = '<image onClick="fade3(this)" style="cursor: pointer" alt="'+arrayOfConnections[i].ip2+'"  onmouseover="popup(this)" onmouseout="popDown(this)" xlink:href="images/sensor(notMaroon).png" height="50" width="50"/>'
-          g1.node.innerHTML += '<text x="'+3+'" y="'+40+'" style="padding-top: 50px; font-size:12px" fill="white">'+'Sensor '+ (sensorIndex+1) +'</text>'
-          g1.node.innerHTML += '<rect style="display:none" x="-75" y="-70" width="196" height="78" stroke="red" fill="white"></rect>'
-          g1.node.innerHTML += '<text style="display:none" x="-65" y="-40" font-size:12px">IP: '+arrayOfConnections[i].ip2+'</text>'
-          g1.node.innerHTML += '<text style="display:none" x="-65" y="-15" font-size:12px">Temp: '+arrayOfConnections[i].temperature+'</text>'
+          g1.node.innerHTML += '<text x="'+2+'" y="'+40+'" style="padding-top: 50px; font-size:12px" fill="white">'+'Sensor'+ (sensorIndex+1) +'</text>'
+          g1.node.innerHTML += '<rect style="display:none" x="-75" y="-80" width="196" height="78" stroke="red" fill="white"></rect>'
+          g1.node.innerHTML += '<text style="display:none" x="-65" y="-50" font-size:12px">IP: '+arrayOfConnections[i].ip2+'</text>'
+          g1.node.innerHTML += '<text style="display:none" x="-65" y="-25" font-size:12px">Temp: '+arrayOfConnections[i].temperature+'</text>'
         } else if (twoConnections[0].className.split(' ')[0] === 'workstation') {
           var workstationIndex = workstationArray.indexOf(twoConnections[0].id);
           var g1 = nodes.group().translate(getPos(twoConnections[0]).x, getPos(twoConnections[0]).y+(50*i))
@@ -401,12 +401,17 @@ compareArray = arrayOfConnections
 
 
         if (twoConnections[1].className.split(' ')[0] === 'sensor') {
-          var sensorIndex = sensorArray.indexOf(twoConnections[1].id);
-          var g2 = nodes.group().translate(getPos(twoConnections[1]).x, getPos(twoConnections[1]).y+(50*i))
+          var heigh
+          if (i===0) {heigh = 100}
+          var g2 = nodes.group().translate(getPos(twoConnections[1]).x+75, getPos(twoConnections[1]).y+(65*(i+1)))
           g2.circle(50).fill("#C2185B").opacity(0.4);
           //console.log(g1.node.children[0])
-          g2.node.innerHTML = '<image onmouseover="popup(this)" xlink:href="images/sensor(notMaroon).png" height="50" width="50"/>'
-          g2.node.innerHTML += '<text x="'+3+'" y="'+40+'" style="padding-top: 50px; font-size:12px" fill="white">'+'Sensor '+ (sensorIndex+1) +'</text>'
+          var sensorIndex = sensorArray.indexOf(twoConnections[1].id);
+          g2.node.innerHTML = '<image onClick="fade3(this)" style="cursor: pointer" alt="'+arrayOfConnections[i].ip2+'"  onmouseover="popup(this)" onmouseout="popDown(this)" xlink:href="images/sensor(notMaroon).png" height="50" width="50"/>'
+          g2.node.innerHTML += '<text x="'+2+'" y="'+40+'" style="padding-top: 50px; font-size:12px" fill="white">'+'Sensor'+ (sensorIndex+1) +'</text>'
+          g2.node.innerHTML += '<rect style="display:none" x="-75" y="-80" width="196" height="78" stroke="red" fill="white"></rect>'
+          g2.node.innerHTML += '<text style="display:none" x="-65" y="-50" font-size:12px">IP: '+arrayOfConnections[i].ip2+'</text>'
+          g2.node.innerHTML += '<text style="display:none" x="-65" y="-25" font-size:12px">Temp: '+arrayOfConnections[i].temperature+'</text>'
 
         } else if (twoConnections[1].className.split(' ')[0] === 'workstation') {
           var workstationIndex = workstationArray.indexOf(twoConnections[1].id);
@@ -415,8 +420,8 @@ compareArray = arrayOfConnections
           //console.log(g1.node.children[0])
           g2.node.innerHTML = '<image style="cursor:pointer" alt="'+arrayOfConnections[i].ip1+'" id="thisisatest" onclick="fade(this)" onmouseover="popup(this)" onmouseout="popDown(this)" xlink:href="images/workstation(grey).png" height="100" width="72"/>'
           g2.node.innerHTML += '<text x="'+1+'" y="'+65+'" style="padding-top: 50px; font-size:12px" fill="white">'+'Workstation'+ (workstationIndex+1) +'</text>'
-          g2.node.innerHTML += '<rect style="display:none" x="-55" y="-50" width="196" height="78" stroke="red" fill="white"></rect>'
-          g2.node.innerHTML += '<text style="display:none" x="-45" y="-25" font-size:12px">User: '+arrayOfConnections[i].user+'</text>'
+          g2.node.innerHTML += '<rect style="display:none" x="-55" y="-60" width="196" height="78" stroke="red" fill="white"></rect>'
+          g2.node.innerHTML += '<text style="display:none" x="-45" y="-35" font-size:12px">User: '+arrayOfConnections[i].user+'</text>'
           g2.node.innerHTML += '<text style="display:none" x="-45" y="0" font-size:12px">IP: '+arrayOfConnections[i].ip1+'</text>'
         } else {
           var externalIndex = externalEntityArray.indexOf(twoConnections[1].id);
@@ -426,8 +431,8 @@ compareArray = arrayOfConnections
           g2.node.innerHTML = '<image style="cursor:pointer" alt="'+arrayOfConnections[i].ip1+'" id="thisisatest" onclick="fade2(this)" onmouseover="popupExternal(this)" onmouseout="popDownExternal(this)" xlink:href="images/externalGrey.png" height="75" width="75"/>'
           g2.node.innerHTML += '<text x="'+2+'" y="'+60+'" style="padding-top: 50px; font-size:12px" fill="white">External Entity</text>'
           g2.node.innerHTML += '<text x="'+35+'" y="'+72+'" style="padding-top: 50px; font-size:12px" fill="white">'+(externalIndex+1)+'</text>'
-          g2.node.innerHTML += '<rect style="display:none" x="-55" y="-50" width="196" height="78" stroke="red" fill="white"></rect>'
-          g2.node.innerHTML += '<text style="display:none" x="-45" y="-25" font-size:12px">User: '+arrayOfConnections[i].user+'</text>'
+          g2.node.innerHTML += '<rect style="display:none" x="-55" y="-70" width="196" height="78" stroke="red" fill="white"></rect>'
+          g2.node.innerHTML += '<text style="display:none" x="-45" y="-35" font-size:12px">User: '+arrayOfConnections[i].user+'</text>'
           g2.node.innerHTML += '<text style="display:none" x="-45" y="0" font-size:12px">IP: '+arrayOfConnections[i].ip1+'</text>'
         }
 
@@ -436,11 +441,14 @@ compareArray = arrayOfConnections
            // targetAttach: 'perifery',
            // sourceAttach: 'perifery',
         //  padEllipse: true,
-        //  markers: markers,
+          markers: markers,
             type: 'curved'
         }, g1);
         conn1.setConnectorColor(color)
-        conn1.setMarker('default',markers)
+        conn1.connector.stroke({
+  width: 10
+});
+      //  conn1.setMarker('default',markers)
         //conn1.setAttribute("onmouseover", "test()")
 
         // var conn2 = g1.connectable({
@@ -456,6 +464,7 @@ compareArray = arrayOfConnections
             if (document.querySelectorAll('path')[i].getAttribute('d').split(' ').length > 3) {
             if (document.querySelectorAll("path")[(h+i)]) {
             console.log(document.querySelectorAll("path")[(h+i)])
+            document.querySelectorAll("path")[(h+i)].setAttribute("stroke-width", "3")
             document.querySelectorAll("path")[(h+i)].setAttribute('onmouseover', 'popupConnection(this)')
             document.querySelectorAll("path")[(h+i)].setAttribute('onmouseout', 'popDownConnection(this)')
             document.querySelectorAll("path")[(h+i)].setAttribute('alt', i)
@@ -466,9 +475,9 @@ compareArray = arrayOfConnections
             g11.circle(50).fill("#C2185B")
           //  M771 100C771 120 771 120 527.5 127.5C284 135 284 135 284 155
           console.log(arrayOfConnections[i])
-            g11.node.innerHTML = '<rect style="display: none" width="225" height="78" stroke="red" fill="white" alt="'+i+'"></rect>'
-            g11.node.innerHTML += '<text style="display: none; font-size: 12px" x="0" y="25" >Alert Name: '+ arrayOfConnections[i].alertName +'</text>'
-            g11.node.innerHTML += '<text style="display: none; font-size: 12px" x="0" y="50" >Details: '+ arrayOfConnections[i].details +'</text>'
+            g11.node.innerHTML = '<rect onmouseover="mouseStatus(true, this);" onmouseout="mouseStatus(false, this);" style="display: none" width="225" height="78" y="0" stroke="red" fill="white" alt="'+i+'"></rect>'
+            g11.node.innerHTML += '<text onmouseover="mouseStatus2(true, this);" onmouseout="mouseStatus2(false, this);" style="display: none; font-size: 12px" x="0" y="20" >Alert Name: '+ arrayOfConnections[i].alertName +'</text>'
+            g11.node.innerHTML += '<text onmouseover="mouseStatus3(true, this);" onmouseout="mouseStatus3(false, this);" style="display: none; font-size: 12px" x="0" y="40" >Details: '+ arrayOfConnections[i].details +'</text>'
             // var g3 = nodes.group().translate(getPos(document.querySelectorAll("path")[(h+i)]).x, getPos(document.querySelectorAll("path")[(h+i)]).y)
             // var d = document.querySelectorAll("path")[(h+i)].getAttribute('d')
             // g3.innerHTML = '<text d="'+document.querySelectorAll("path")[(h+i)]+'" >This is a test</text>'
@@ -613,16 +622,62 @@ function popupConnection(user) {
   }
 }
 
+var mouse = false;
+function mouseStatus(n, user) {
+     mouse = n;
+    if (mouse) {
+        user.style.display = 'block'
+        user.nextElementSibling.style.display = 'block'
+        user.nextElementSibling.nextElementSibling.style.display = 'block'
+    } else {
+         user.style.display = 'none'
+        user.nextElementSibling.style.display = 'none'
+        user.nextElementSibling.nextElementSibling.style.display = 'none'
+    }
+    
+}
+
+var mouse2 = false;
+function mouseStatus2(n, user) {
+     mouse2 = n;
+    if (mouse2) {
+        user.style.display = 'block'
+        user.nextElementSibling.style.display = 'block'
+        user.previousElementSibling.style.display = 'block'
+    } else {
+        user.style.display = 'none'
+        user.nextElementSibling.style.display = 'none'
+        user.previousElementSibling.style.display = 'none'
+    }
+    
+}
+
+var mouse3 = false;
+function mouseStatus3(n, user) {
+     mouse3 = n;
+    if (mouse3) {
+        user.style.display = 'block'
+        user.previousElementSibling.style.display = 'block'
+        user.previousElementSibling.previousElementSibling.style.display = 'block'
+    } else {
+        user.style.display = 'none'
+        user.previousElementSibling.style.display = 'none'
+        user.previousElementSibling.previousElementSibling.style.display = 'none'
+    }
+    
+}
+
 
 
 function popDownConnection(user) {
   for (i=0;i<document.querySelectorAll('rect').length; i++) {
-    if (user.getAttribute('alt') === document.querySelectorAll('rect')[i].getAttribute('alt')) {
+    if (user.getAttribute('alt') === document.querySelectorAll('rect')[i].getAttribute('alt') && !mouse) {
       document.querySelectorAll('rect')[i].style.display = 'none'
       document.querySelectorAll('rect')[i].nextElementSibling.style.display = 'none'
       document.querySelectorAll('rect')[i].nextElementSibling.nextElementSibling.style.display = 'none'
     }
   }
+    
 }
 
 

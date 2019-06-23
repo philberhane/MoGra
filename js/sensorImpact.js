@@ -1,4 +1,4 @@
-document.querySelector('.chart').innerHTML = '<div id="alertFilter" style="padding-bottom: 10px"><div><div style="display: none"><h3 style="font-size: 17.5px; padding-top: 10px;">Criticality</h3><span style="width: 2px;height: 2px;background-color: rgb(141, 2, 31); color: rgb(141, 2, 31)">test</span> High <br> <span style="width: 2px;height: 2px;background-color: rgb(253, 95, 0); color: rgb(253, 95, 0)">test</span> Medium <br> <span style="width: 2px;height: 2px;background-color: rgb(207,181,59); color: rgb(207,181,59)">test</span> Low</div></div><div><h3 style="padding-top: 10px;font-size: 18px">Manufacturing Floor: Alerts Over Time</h3><button style="cursor:pointer" id="toggleFiltersButton" onClick="toggleFilters()">Filter by Date &#9662;</button><br><div id="toggleFilter" style="display: none"><p>Dates</p><input style="border-radius: 5px; border: 1px solid grey" type="date" id="date1"> - <input style="border-radius: 5px; border: 1px solid grey" type="date" id="date2"> <br><button id="filterFunction" onClick="filterFunction()">GO</button></div></div></div>'
+document.querySelector('.chart').innerHTML = '<div id="alertFilter" style="padding-bottom: 10px"><div><div ><h3 style="font-size: 17.5px; padding-top: 10px;">Sensors</h3><span style="width: 2px;height: 2px;background-color: #e52727; color: #e52727">test</span> Sensor 1 <br> <span style="width: 2px;height: 2px;background-color: rgb(253, 95, 0); color: rgb(253, 95, 0)">test</span> Sensor 2 <br> <span style="width: 2px;height: 2px;background-color: rgb(207,181,59); color: rgb(207,181,59)">test</span> Sensor 3</div></div><div><h3 style="padding-top: 10px;font-size: 18px">Manufacturing Floor: Alerts Over Time</h3><button style="cursor:pointer" id="toggleFiltersButton" onClick="toggleFilters()">Filter by Date &#9662;</button><br><div id="toggleFilter" style="display: none"><p>Dates</p><input style="border-radius: 5px; border: 1px solid grey" type="date" id="date1"> - <input style="border-radius: 5px; border: 1px solid grey" type="date" id="date2"> <br><button id="filterFunction" onClick="filterFunction()">GO</button></div></div></div>'
 
 document.querySelector('.chart').innerHTML += '<div id="chart_div" style="margin-top: 200px; width: 900; height: 650px;"></div>'
 
@@ -7,6 +7,7 @@ document.querySelector('.hed').firstElementChild.nextElementSibling.innerHTML = 
 document.querySelectorAll('.industrialnetworkm')[2].style.color = 'white'
 
 document.querySelector('.chart').style.display = 'block'
+document.querySelector('.mainsensors').style.display = 'block'
 
 // document.getElementById('alertFilter').style.display = 'none'
 
@@ -172,8 +173,10 @@ document.querySelector('.chart').style.display = 'block'
          google.setOnLoadCallback(drawChart);
             function drawChart() {
               var data = new google.visualization.DataTable();
-               data.addColumn('date', 'Dates');
-              data.addColumn('number', 'Sensor');
+              data.addColumn('date', 'Dates');
+             data.addColumn('number', 'Sensor 1');
+             data.addColumn('number', 'Sensor 2');
+             data.addColumn('number', 'Sensor 3');
 
 
 
@@ -233,16 +236,26 @@ document.querySelector('.chart').style.display = 'block'
                 arrayOfArrays.push(finalArray)
               }
               console.log(arrayOfArrays)
-             data.addRows(arrayOfArrays);
+             //data.addRows(arrayOfArrays);
 
-
+             // three different arrays per day
+             var hardArray = [
+               [new Date(2019, 04, 01), 1, 2, 5],
+               [new Date(2019, 04, 21), 7, 6, 2],
+               [new Date(2019, 04, 27), 3, 6, 5],
+               [new Date(2019, 05, 01), 5, 1, 3],
+               [new Date(2019, 05, 03), 2, 1, 7],
+             ]
+             data.addRows(hardArray)
 
               var options = {
                 hAxis: {title: 'Date'},
                vAxis: {title: 'Number of Alerts By Sensor'},
                 legend: 'none',
                 series: {
-                     0: { pointShape: 'circle', color: 'blue' }
+                  0: {pointShape: 'circle', color: '#e52727'},
+                  1: {pointShape: 'circle', color: 'rgb(253, 95, 0)'},
+                  2: { pointShape: 'circle', color: 'rgb(207,181,59)'}
                    },
                    backgroundColor: '#F1F1F1',
                    pointSize: 20

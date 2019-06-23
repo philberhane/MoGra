@@ -3,8 +3,9 @@ document.querySelector('.chart').innerHTML += '<div id="container" style="margin
 document.querySelector('.anima-valign-text-middle').innerHTML = ''
 document.querySelector('.hed').firstElementChild.nextElementSibling.innerHTML = '<img width="100%" src="images/logo.png" >'
 document.querySelectorAll('.industrialnetworkm ')[3].style.color = 'white'
-
+document.querySelector('.mainoperator').style.display = 'block'
 document.querySelector('.chart').style.display = 'block'
+document.getElementById('alertFilter').innerHTML += '<div id="displayDate"></div>'
 
 				 $.ajax({
 					 url: 'json_read/mogra_event.json',
@@ -17,6 +18,10 @@ document.querySelector('.chart').style.display = 'block'
 							 var arrayOfAlerts = []
 							 for (i=0; i<data.mogra_event.alerts.length; i++) {
 									 if(sessionStorage.length === 0) {
+										 document.getElementById('displayDate').innerHTML = new Date();
+										 var timestamp = new Date(data.mogra_event.alerts[i].timestamp);
+						         var todaysDate = new Date();
+						         if(timestamp.setHours(0,0,0,0) == todaysDate.setHours(0,0,0,0)) {
 								 var object = {
 									 date : data.mogra_event.alerts[i].timestamp,
 									 user: data.mogra_event.alerts[i].user,
@@ -24,11 +29,19 @@ document.querySelector('.chart').style.display = 'block'
 								 }
 								 arrayOfAlerts.push(object)
 							 }
+							 }
 							else {
 							 var beginDate = sessionStorage.beginDate
 							 var endDate = sessionStorage.endDate
 							 var beginTime = sessionStorage.beginTime
 				       var endTime = sessionStorage.endTime
+
+
+							 document.getElementById('displayDate').innerHTML = beginDate + ' to ' + endDate
+							if (beginTime.length > 0 && endTime.length > 0) {
+
+								document.getElementById('displayDate').innerHTML += '<br>' + beginTime + ' to ' + endTime
+							}
 
 							 var string = data.mogra_event.alerts[i].timestamp
 							 var splitString = string.split(' ')
@@ -115,22 +128,34 @@ document.querySelector('.chart').style.display = 'block'
 								 arrayOfAlerts.push(object)
 							 }
 }
+
 						 }
 						 }
 						 document.getElementById('currentDate').style.display = 'none'
 						 sessionStorage.clear()
 
 
-
+						 		if (arrayOfAlerts.length !== 0) {
 
 							for (i=0; i<arrayOfAlerts.length; i++) {
-								for (j=i+1; j<arrayOfAlerts.length-1; j++) {
-								 if (arrayOfAlerts[i].user === arrayOfAlerts[j].user && arrayOfAlerts[i].date === arrayOfAlerts[i].date) {
-									 arrayOfAlerts[j].count = arrayOfAlerts[j].count + 1
+								for (j=i+1; j<arrayOfAlerts.length; j++) {
+								 if (arrayOfAlerts[i].user === arrayOfAlerts[j].user && i!==j) {
 									 arrayOfAlerts.splice(j, 1)
+									 arrayOfAlerts[i].count = arrayOfAlerts[i].count + 1
+
 								 }
 							 }
 						 }
+
+						 for (i=0; i<arrayOfAlerts.length; i++) {
+							 for (j=i+1; j<arrayOfAlerts.length; j++) {
+								if (arrayOfAlerts[i].user === arrayOfAlerts[j].user && i!==j) {
+									arrayOfAlerts.splice(j, 1)
+									arrayOfAlerts[i].count = arrayOfAlerts[i].count + 1
+
+								}
+							}
+						}
 						 console.log(arrayOfAlerts)
 
 
@@ -310,6 +335,8 @@ document.querySelector('.chart').style.display = 'block'
 											array.push(newArray)
 										}
 
+										console.log(array)
+
 
 									            // Define the chart to be drawn.
 									            var data = google.visualization.arrayToDataTable(array);
@@ -352,6 +379,10 @@ document.querySelector('.chart').style.display = 'block'
 									            chart.draw(data, options);
 									         }
 									         google.charts.setOnLoadCallback(drawChart);
+												 }
+													 else {
+
+													 }
 
 
 
@@ -386,6 +417,8 @@ document.querySelector('.chart').style.display = 'block'
 
 			 sessionStorage.beginDate = beginDate
 			 sessionStorage.endDate = endDate
+			 sessionStorage.beginTime = beginTime
+			 sessionStorage.endTime = endTime
 
 
 			 location.reload();

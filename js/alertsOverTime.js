@@ -1,4 +1,4 @@
-document.querySelector('.chart').innerHTML = '<div id="alertFilter" style="padding-bottom: 10px"><div><h3 style="font-size: 17.5px; padding-top: 10px;">Criticality</h3><span style="width: 2px;height: 2px;background-color: rgb(141, 2, 31); color: rgb(141, 2, 31)">test</span> High <br> <span style="width: 2px;height: 2px;background-color: rgb(253, 95, 0); color: rgb(253, 95, 0)">test</span> Medium <br> <span style="width: 2px;height: 2px;background-color: rgb(207,181,59); color: rgb(207,181,59)">test</span> Low</div><div ><h3 style="font-size: 18px">Manufacturing Floor: Alerts Over Time</h3><button style="cursor:pointer" id="toggleFiltersButton" onClick="toggleFilters()">Filter by Date / Time &#9662;</button><br><div id="toggleFilter" style="display: none"><p>Dates</p><input style="border-radius: 5px; border: 1px solid grey" type="date" id="date1"> - <input style="border-radius: 5px; border: 1px solid grey" type="date" id="date2"> <br><button id="filterFunction" onClick="filterFunction()">GO</button></div></div></div>'
+document.querySelector('.chart').innerHTML = '<div id="alertFilter" style="padding-bottom: 10px"><div><h3 style="font-size: 17.5px; padding-top: 10px;">Criticality</h3><span style="width: 2px;height: 2px;background-color: #e52727; color: #e52727">test</span> High <br> <span style="width: 2px;height: 2px;background-color: rgb(253, 95, 0); color: rgb(253, 95, 0)">test</span> Medium <br> <span style="width: 2px;height: 2px;background-color: rgb(207,181,59); color: rgb(207,181,59)">test</span> Low</div><div ><h3 style="font-size: 18px">Manufacturing Floor: Alerts Over Time</h3><button style="cursor:pointer" id="toggleFiltersButton" onClick="toggleFilters()">Filter by Date / Time &#9662;</button><br><div id="toggleFilter" style="display: none"><p>Dates</p><input style="border-radius: 5px; border: 1px solid grey" type="date" id="date1"> - <input style="border-radius: 5px; border: 1px solid grey" type="date" id="date2"> <br><button id="filterFunction" onClick="filterFunction()">GO</button></div></div></div>'
 
 document.querySelector('.chart').innerHTML += '<div id="chart_div" style="margin-top: 200px; width: 900; height: 650px;"></div>'
 document.querySelector('.chart').style.display = 'block'
@@ -8,7 +8,7 @@ document.querySelector('.rectangle1').backgroundColor = ''
 document.querySelector('.anima-valign-text-middle').innerHTML = ''
 document.querySelector('.hed').firstElementChild.nextElementSibling.innerHTML = '<img width="100%" src="images/logo.png" >'
 document.querySelectorAll('.industrialnetworkm')[0].style.color = 'white'
-
+document.querySelector('.mainalerts').style.display = 'block'
 
 
      $.ajax({
@@ -233,9 +233,9 @@ document.querySelectorAll('.industrialnetworkm')[0].style.color = 'white'
                 var valueThree
 
                 if (arrayOfAlerts[i].low.length === 0) {
-                  valueThree = null
+                  valueOne = null
                 } else {
-                  valueThree = arrayOfAlerts[i].low.length
+                  valueOne = arrayOfAlerts[i].low.length
                 }
                 if (arrayOfAlerts[i].medium.length === 0) {
                   valueTwo = null
@@ -243,12 +243,12 @@ document.querySelectorAll('.industrialnetworkm')[0].style.color = 'white'
                   valueTwo = arrayOfAlerts[i].medium.length
                 }
                 if (arrayOfAlerts[i].high.length === 0) {
-                  valueOne = null
+                  valueThree = null
                 } else {
-                  valueOne = arrayOfAlerts[i].high.length
+                  valueThree = arrayOfAlerts[i].high.length
                 }
 
-                finalArray = [(new Date(finalizedDate[2], finalizedDate[0], finalizedDate[1])), valueOne,valueTwo,valueThree]
+                finalArray = [(new Date(finalizedDate[2], finalizedDate[0]-1, finalizedDate[1])), valueOne,valueTwo,valueThree]
                 arrayOfArrays.push(finalArray)
               }
               console.log(arrayOfArrays)
@@ -263,7 +263,7 @@ document.querySelectorAll('.industrialnetworkm')[0].style.color = 'white'
                 series: {
                      0: {pointShape: 'circle', color: 'rgb(207,181,59)'},
                      1: {pointShape: 'circle', color: 'rgb(253, 95, 0)'},
-                     2: { pointShape: 'circle', color: 'rgb(141, 2, 31)' }
+                     2: { pointShape: 'circle', color: '#e52727' }
                    },
                    backgroundColor: '#F1F1F1',
                    pointSize: 20

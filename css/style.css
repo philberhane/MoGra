@@ -1,7 +1,33 @@
+/* html, body, svg {
+  height: 100%;
+}  */
+html {
+  height: 100%;
+}
+body {
+  min-height: 100%;
+}
+
 /* .eventview {
   display: none;
 } */
 .chart {
+  display : none;
+}
+
+.mainoperator {
+  display: none;
+}
+
+.mainevent {
+  display: none;
+}
+
+.mainalerts {
+  display: none;
+}
+
+.mainsensors {
   display : none;
 }
 
@@ -115,10 +141,8 @@ tr:nth-child(even) {
 }
 
 
-/*
-html, body, svg {
-  height: 100%;
-} */
+
+
 /*
 
 #svgContainer {

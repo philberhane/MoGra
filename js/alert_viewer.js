@@ -5,6 +5,7 @@ document.querySelector('.anima-valign-text-middle').innerHTML = ''
 document.querySelector('.hed').firstElementChild.nextElementSibling.innerHTML = '<img width="100%" src="images/logo.png" >'
 
 document.querySelectorAll('.industrialnetworkm')[1].style.color = 'white'
+document.querySelector('.mainevent').style.display = 'block'
 
 var readJsonData
 var dbJsonData
