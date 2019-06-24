@@ -342,8 +342,13 @@ document.getElementById('alertFilter').innerHTML += '<div id="displayDate"></div
 									            var data = google.visualization.arrayToDataTable(array);
 
 									            var options = {
-																hAxis: {title: 'Users'},
+																hAxis: {title: 'Users', titleTextStyle : {
+            fontSize: 25 // or the number you want
+        }},
 									              vAxis: {
+																	titleTextStyle : {
+            fontSize: 25 // or the number you want
+        },
 									            gridlines : {
 									              count : 5
 									            },
