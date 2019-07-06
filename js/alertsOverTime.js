@@ -257,8 +257,12 @@ document.querySelector('.mainalerts').style.display = 'block'
 
 
               var options = {
-                hAxis: {title: 'Date'},
-               vAxis: {title: 'Number of Alerts By Criticality'},
+                hAxis: {title: 'Date', titleTextStyle : {
+fontSize: 25 // or the number you want
+}},
+               vAxis: {title: 'Number of Alerts By Criticality', titleTextStyle : {
+fontSize: 25 // or the number you want
+}},
                 legend: 'none',
                 series: {
                      0: {pointShape: 'circle', color: 'rgb(207,181,59)'},

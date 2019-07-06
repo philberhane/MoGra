@@ -249,8 +249,12 @@ document.querySelector('.mainsensors').style.display = 'block'
              data.addRows(hardArray)
 
               var options = {
-                hAxis: {title: 'Date'},
-               vAxis: {title: 'Number of Alerts By Sensor'},
+                hAxis: {title: 'Date', titleTextStyle : {
+fontSize: 25 // or the number you want
+}},
+               vAxis: {title: 'Number of Alerts By Sensor', titleTextStyle : {
+fontSize: 25 // or the number you want
+}},
                 legend: 'none',
                 series: {
                   0: {pointShape: 'circle', color: '#e52727'},

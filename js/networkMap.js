@@ -25,6 +25,82 @@ var markers = svg.group();
 var nodes = svg.group();
 var defs = svg.defs();
 
+function mograReport() {
+  $.ajax({
+    url: 'json_read/mogra_report.json',
+    contentType: 'application/json',
+    dataType: 'json',
+    success: function (reportData) {
+
+    var arrayOfEndpointObjects2 = []
+    var arrayOfConnections2 = []
+
+    for (l=0;l<reportData.mogra_report.network_map.connections.lenth; l++) {
+      var object1 = {
+        ip : reportData.mogra_report.network_map.connections[i].end_point_1,
+        type: 'sensor',
+      }
+      var object2 = {
+        ip : reportData.mogra_report.network_map.connections[i].end_point_2,
+        type: 'sensor'
+      }
+
+      var object3 = {
+        ip1 : reportData.mogra_report.network_map.connections[i].end_point_1,
+        ip2:reportData.mogra_report.network_map.connections[i].end_point_2
+      }
+      arrayOfEndpointObjects2.push(object1)
+      arrayOfEndpointObjects2.push(object2)
+      arrayOfConnections2.push(object3)
+    }
+
+    for (j=0; j < arrayOfEndpointObjects2.length; j++ ) {
+      for (k=j+1; k < arrayOfEndpointObjects2.length-1; k++) {
+        if (arrayOfEndpointObjects2[j].ip === arrayOfEndpointObjects2[k].ip && j!==k) {
+          arrayOfEndpointObjects2[j].type = 'workstation'
+          arrayOfEndpointObjects2.splice(k, 1)
+          //console.log('Popped: ' + arrayOfEndpointObjects[k].ip)
+        }
+        if (arrayOfEndpointObjects2[j].ip.startsWith('2')) {
+          arrayOfEndpointObjects2[j].type = 'external entity'
+        }
+      }
+    }
+
+
+    for (j=0; j < arrayOfEndpointObjects2.length; j++ ) {
+      var match = false;
+      for (k=0; k < arrayOfEndpointObjects.length; k++) {
+        if (arrayOfEndpointObjects2[j].ip === arrayOfEndpointObjects[k].ip) {
+          match = true;
+        }
+      }
+      if (match === false) {
+        arrayOfEndpointObjects.push(arrayOfEndpointObjects2[j])
+      }
+    }
+
+    for (j=0; j < arrayOfConnections2.length; j++ ) {
+      var match = false;
+      for (k=0; k < arrayOfConnections.length; k++) {
+        if (arrayOfConnections2[j].ip1 === arrayOfConnections[k].ip1 && arrayOfConnections2[j].ip2 === arrayOfConnections[k].ip2) {
+          match = true;
+        }
+      }
+      if (match === false) {
+        arrayOfConnections.push(arrayOfConnections2[j])
+        console.log(arrayOfConnections2[j])
+      }
+    }
+
+  },
+
+  error: function (errorOkay) {
+      console.log(errorOkay);
+  }
+  });
+}
+
 //Have another property in an object of the node its connected to
 
 // <div id="workstation" style="background: #E5E5E5;
@@ -66,8 +142,14 @@ $.ajax({
       readJsonData = data
       var arrayOfEndpointObjects = []
       var arrayOfConnections = []
+      var absoluteArrayOfEndpoints = []
 
       for (i=0; i<data.mogra_event.alerts.length; i++) {
+        var absoluteObject = {
+          ip1: data.mogra_event.alerts[i].end_point_1,
+          ip2: data.mogra_event.alerts[i].end_point_2
+        }
+        absoluteArrayOfEndpoints.push(absoluteObject)
         if(sessionStorage.length === 0) {
         var timestamp = new Date(data.mogra_event.alerts[i].timestamp);
         var todaysDate = new Date();
@@ -221,6 +303,78 @@ details: data.mogra_event.alerts[i].details
           }
         }
       }
+
+      $.ajax({
+        url: 'json_read/mogra_report.json',
+        contentType: 'application/json',
+        dataType: 'json',
+        success: function (reportData) {
+          console.log(reportData)
+
+        var arrayOfEndpointObjects2 = []
+        var arrayOfConnections2 = []
+
+        for (l=0;l<reportData.mogra_report.network_map.connections.length; l++) {
+          var object1 = {
+            ip : reportData.mogra_report.network_map.connections[l].end_point_1,
+            type: 'sensor',
+          }
+          var object2 = {
+            ip : reportData.mogra_report.network_map.connections[l].end_point_2,
+            type: 'sensor'
+          }
+
+          var object3 = {
+            ip1 : reportData.mogra_report.network_map.connections[l].end_point_1,
+            ip2:reportData.mogra_report.network_map.connections[l].end_point_2
+          }
+          arrayOfEndpointObjects2.push(object1)
+          arrayOfEndpointObjects2.push(object2)
+          arrayOfConnections2.push(object3)
+        }
+
+        for (j=0; j < arrayOfEndpointObjects2.length; j++ ) {
+          for (k=j+1; k < arrayOfEndpointObjects2.length-1; k++) {
+            if (arrayOfEndpointObjects2[j].ip === arrayOfEndpointObjects2[k].ip && j!==k) {
+              arrayOfEndpointObjects2[j].type = 'workstation'
+              arrayOfEndpointObjects2.splice(k, 1)
+              //console.log('Popped: ' + arrayOfEndpointObjects[k].ip)
+            }
+            if (arrayOfEndpointObjects2[j].ip.startsWith('2')) {
+              arrayOfEndpointObjects2[j].type = 'external entity'
+            }
+          }
+        }
+
+
+        for (j=0; j < arrayOfEndpointObjects2.length; j++ ) {
+          var match = false;
+          for (k=0; k < arrayOfEndpointObjects.length; k++) {
+            if (arrayOfEndpointObjects2[j].ip === arrayOfEndpointObjects[k].ip) {
+              match = true;
+            }
+          }
+          if (match === false) {
+            console.log(arrayOfEndpointObjects2[j])
+            arrayOfEndpointObjects.push(arrayOfEndpointObjects2[j])
+          }
+        }
+
+        for (j=0; j < arrayOfConnections2.length; j++ ) {
+          var match = false;
+          for (k=0; k < arrayOfConnections.length; k++) {
+            if (arrayOfConnections2[j].ip1 === arrayOfConnections[k].ip1 && arrayOfConnections2[j].ip2 === arrayOfConnections[k].ip2) {
+              match = true;
+            }
+          }
+          if (match === false) {
+            arrayOfConnections.push(arrayOfConnections2[j])
+            console.log(arrayOfConnections2[j])
+          }
+        }
+
+console.log(arrayOfEndpointObjects)
+
       // Organize 3 arrays: sensor, workstation, and external entities
       var sensorArray = []
       var workstationArray = []
@@ -236,6 +390,8 @@ details: data.mogra_event.alerts[i].details
           sensorArray.push(arrayOfEndpointObjects[i].ip)
         }
       }
+
+      console.log(sensorArray)
 
       for (i=0;i<workstationArray.length;i++) {
         console.log(workstationArray[i])
@@ -329,7 +485,9 @@ details: data.mogra_event.alerts[i].details
       var connect = document.getElementsByClassName('connect')
 console.log(arrayOfConnections)
 compareArray = arrayOfConnections
+var exists = []
       for (i=0;i<arrayOfConnections.length;i++) {
+
         var twoConnections = []
 
         for (j=0;j<connect.length;j++) {
@@ -365,36 +523,67 @@ compareArray = arrayOfConnections
         if (twoConnections[0].className.split(' ')[0] === 'sensor') {
           var heigh
           if (i===0) {heigh = 100}
-          var g1 = nodes.group().translate(getPos(twoConnections[0]).x+75, getPos(twoConnections[0]).y+(65*(i+1)))
+          var found = false;
+          var foundIndex;
+          for(var k = 0; k < exists.length; k++) {
+            if (exists[k].ip === twoConnections[0].id) {
+              found = true;
+              foundIndex = k;
+              break;
+          }
+      }
+
+      if (found === true) {
+        var g1 = exists[foundIndex].location
+      } else {
+        var g1 = nodes.group().translate(getPos(twoConnections[0]).x+75, getPos(twoConnections[0]).y+(65*(i+1)))
+        var anotherObj = {
+          ip: twoConnections[0].id,
+          location: nodes.group().translate(getPos(twoConnections[0]).x+75, getPos(twoConnections[0]).y+(65*(i+1))),
+          temp: arrayOfConnections[i].temperature
+        }
+        exists.push(anotherObj)
+      }
+
           g1.circle(50).fill("#C2185B").opacity(0.4);
           //console.log(g1.node.children[0])
           var sensorIndex = sensorArray.indexOf(twoConnections[0].id);
+          console.log(sensorIndex)
+          console.log(sensorArray)
+          console.log(twoConnections[0].id)
           g1.node.innerHTML = '<image onClick="fade3(this)" style="cursor: pointer" alt="'+arrayOfConnections[i].ip2+'"  onmouseover="popup(this)" onmouseout="popDown(this)" xlink:href="images/sensor(notMaroon).png" height="50" width="50"/>'
+
           g1.node.innerHTML += '<text x="'+2+'" y="'+40+'" style="padding-top: 50px; font-size:12px" fill="white">'+'Sensor'+ (sensorIndex+1) +'</text>'
           g1.node.innerHTML += '<rect style="display:none" x="-75" y="-80" width="196" height="78" stroke="red" fill="white"></rect>'
           g1.node.innerHTML += '<text style="display:none" x="-65" y="-50" font-size:12px">IP: '+arrayOfConnections[i].ip2+'</text>'
+          if (arrayOfConnections[i].temperature){
           g1.node.innerHTML += '<text style="display:none" x="-65" y="-25" font-size:12px">Temp: '+arrayOfConnections[i].temperature+'</text>'
+        } else {
+          g1.node.innerHTML += '<text style="display:none" x="-65" y="-25" font-size:12px">Temp: '+exists[foundIndex].temp+'</text>'
+        }
+
+
         } else if (twoConnections[0].className.split(' ')[0] === 'workstation') {
           var workstationIndex = workstationArray.indexOf(twoConnections[0].id);
-          var g1 = nodes.group().translate(getPos(twoConnections[0]).x, getPos(twoConnections[0]).y+(50*i))
-          g1.circle(50).fill("#C2185B").opacity(0.4);
+          var g2 = nodes.group().translate(getPos(twoConnections[0]).x, getPos(twoConnections[0]).y+50)
+          g2.circle(50).fill("#C2185B").opacity(0.4);
           //console.log(g1.node.children[0])
-          g1.node.innerHTML = '<image onmouseover="popup(this)" xlink:href="images/workstation(grey).png" height="82" width="57"/>'
-          g1.node.innerHTML += '<text x="'+3+'" y="'+40+'" style="padding-top: 50px; font-size:12px" fill="white">'+'Workstation '+ (workstationIndex+1) +'</text>'
-          g2.node.innerHTML += '<rect x="-55" y="-50" width="196" height="78" stroke="red" fill="white"></rect>'
-
-          //g2.node.innerHTML += '<rect x="0" y="-50" width="196" height="78" stroke="red" fill="white"></rect>'
+          g2.node.innerHTML = '<image style="cursor:pointer" alt="'+arrayOfConnections[i].ip1+'" id="thisisatest" onclick="fade(this)" onmouseover="popup(this)" onmouseout="popDown(this)" xlink:href="images/workstation(grey).png" height="100" width="72"/>'
+          g2.node.innerHTML += '<text x="'+1+'" y="'+65+'" style="padding-top: 50px; font-size:12px" fill="white">'+'Workstation'+ (workstationIndex+1) +'</text>'
+          g2.node.innerHTML += '<rect style="display:none" x="-55" y="-60" width="196" height="78" stroke="red" fill="white"></rect>'
+          g2.node.innerHTML += '<text style="display:none" x="-45" y="-35" font-size:12px">User: '+arrayOfConnections[i].user+'</text>'
+          g2.node.innerHTML += '<text style="display:none" x="-45" y="0" font-size:12px">IP: '+arrayOfConnections[i].ip1+'</text>'
         } else {
           var externalIndex = externalEntityArray.indexOf(twoConnections[0].id);
-          var g1 = nodes.group().translate(getPos(twoConnections[0]).x, getPos(twoConnections[0]).y+(50*i))
-          g1.circle(50).fill("#C2185B").opacity(0.4);
+          var g2 = nodes.group().translate(getPos(twoConnections[0]).x, getPos(twoConnections[0]).y+50)
+          g2.circle(50).fill("#C2185B").opacity(0.4);
           //console.log(g1.node.children[0])
-          g1.node.innerHTML = '<image onmouseover="popup(this)" xlink:href="images/externalGrey.png" height="75" width="75"/>'
-          g1.node.innerHTML += '<text x="'+2+'" y="'+60+'" style="padding-top: 50px; font-size:12px" fill="white">'+'External Entity</text>'
-          g1.node.innerHTML += '<rect x="-55" y="-50" width="196" height="78" stroke="red" fill="white"></rect>'
-
-          //g1.node.innerHTML += '<rect x="'+35+'" y="'+72+'" fill="transparent" stroke="'+color+'" style="padding-top: 50px;">'+(externalIndex+1)+'</rect>'
-
+          g2.node.innerHTML = '<image style="cursor:pointer" alt="'+arrayOfConnections[i].ip1+'" id="thisisatest" onclick="fade2(this)" onmouseover="popupExternal(this)" onmouseout="popDownExternal(this)" xlink:href="images/externalGrey.png" height="75" width="75"/>'
+          g2.node.innerHTML += '<text x="'+2+'" y="'+60+'" style="padding-top: 50px; font-size:12px" fill="white">External Entity</text>'
+          g2.node.innerHTML += '<text x="'+35+'" y="'+72+'" style="padding-top: 50px; font-size:12px" fill="white">'+(externalIndex+1)+'</text>'
+          g2.node.innerHTML += '<rect style="display:none" x="-55" y="-70" width="196" height="78" stroke="red" fill="white"></rect>'
+          g2.node.innerHTML += '<text style="display:none" x="-45" y="-35" font-size:12px">User: '+arrayOfConnections[i].user+'</text>'
+          g2.node.innerHTML += '<text style="display:none" x="-45" y="0" font-size:12px">IP: '+arrayOfConnections[i].ip1+'</text>'
         }
 
 
@@ -405,14 +594,16 @@ compareArray = arrayOfConnections
           if (i===0) {heigh = 100}
           var g2 = nodes.group().translate(getPos(twoConnections[1]).x+75, getPos(twoConnections[1]).y+(65*(i+1)))
           g2.circle(50).fill("#C2185B").opacity(0.4);
-          //console.log(g1.node.children[0])
+          //console.log(g2.node.children[0])
           var sensorIndex = sensorArray.indexOf(twoConnections[1].id);
-          g2.node.innerHTML = '<image onClick="fade3(this)" style="cursor: pointer" alt="'+arrayOfConnections[i].ip2+'"  onmouseover="popup(this)" onmouseout="popDown(this)" xlink:href="images/sensor(notMaroon).png" height="50" width="50"/>'
+          console.log(sensorIndex)
+          console.log(sensorArray)
+          console.log(twoConnections[1].id)
+          g2.node.innerHTML = '<image onClick="fade3(this)" style="cursor: pointer" alt="'+arrayOfConnections[i].ip1+'"  onmouseover="popup(this)" onmouseout="popDown(this)" xlink:href="images/sensor(notMaroon).png" height="50" width="50"/>'
           g2.node.innerHTML += '<text x="'+2+'" y="'+40+'" style="padding-top: 50px; font-size:12px" fill="white">'+'Sensor'+ (sensorIndex+1) +'</text>'
           g2.node.innerHTML += '<rect style="display:none" x="-75" y="-80" width="196" height="78" stroke="red" fill="white"></rect>'
-          g2.node.innerHTML += '<text style="display:none" x="-65" y="-50" font-size:12px">IP: '+arrayOfConnections[i].ip2+'</text>'
+          g2.node.innerHTML += '<text style="display:none" x="-65" y="-50" font-size:12px">IP: '+arrayOfConnections[i].ip1+'</text>'
           g2.node.innerHTML += '<text style="display:none" x="-65" y="-25" font-size:12px">Temp: '+arrayOfConnections[i].temperature+'</text>'
-
         } else if (twoConnections[1].className.split(' ')[0] === 'workstation') {
           var workstationIndex = workstationArray.indexOf(twoConnections[1].id);
           var g2 = nodes.group().translate(getPos(twoConnections[1]).x, getPos(twoConnections[1]).y+50)
@@ -492,6 +683,9 @@ console.log(arrayOfPaths)
 
 
       }
+
+
+
       document.getElementById('sensorColumn').style.display = 'none'
       document.getElementById('workstationColumn').style.display = 'none'
       document.getElementById('externalColumn').style.display = 'none'
@@ -577,14 +771,24 @@ console.log(arrayOfPaths)
         failure: function() {alert("Error!");}
     });
   },
-  // if dbjson is false ie empty db, just save read data to it
-  error: function (readJsonData) {
-    console.log('error but heres all of the read data ' + readJsonData);
-  }
-  });
+
+    error: function (jqXHR, text, errorThrown) {
+        console.log(jqXHR + " " + text + " " + errorThrown);
+    }
+    });
 
 
-      },
+
+  },
+
+    error: function (jqXHR, text, errorThrown) {
+        console.log('ERROR');
+    }
+    });
+
+
+},
+
 error: function (jqXHR, text, errorThrown) {
     console.log(jqXHR + " " + text + " " + errorThrown);
 }
@@ -634,7 +838,7 @@ function mouseStatus(n, user) {
         user.nextElementSibling.style.display = 'none'
         user.nextElementSibling.nextElementSibling.style.display = 'none'
     }
-    
+
 }
 
 var mouse2 = false;
@@ -649,7 +853,7 @@ function mouseStatus2(n, user) {
         user.nextElementSibling.style.display = 'none'
         user.previousElementSibling.style.display = 'none'
     }
-    
+
 }
 
 var mouse3 = false;
@@ -664,7 +868,7 @@ function mouseStatus3(n, user) {
         user.previousElementSibling.style.display = 'none'
         user.previousElementSibling.previousElementSibling.style.display = 'none'
     }
-    
+
 }
 
 
@@ -677,7 +881,7 @@ function popDownConnection(user) {
       document.querySelectorAll('rect')[i].nextElementSibling.nextElementSibling.style.display = 'none'
     }
   }
-    
+
 }
 
 
