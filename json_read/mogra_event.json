@@ -129,22 +129,6 @@
                     },
                     "user"        : "jill_j",
                     "timestamp"   : "May 23,2019 10:15:11 AM"
-                },
-
-                {
-                    "end_point_1" : "192.168.1.102",
-                    "end_point_2" : "192.168.1.150",
-                    "alert_level" : "high",
-                    "metrics": {
-                      "temperature": "40F",
-                      "vibration": "6Hz",
-                      "pressure": "80psi"
-                    },
-                    "description" : "Possible session hijack",
-                    "details"     : "Number of Writes exceeded 100",
-                    "vulnerabilities": "SSA-724606: Denial-of-Service Vulnerabilities in SIMATIC S7-1200 PLCs",
-                    "user"        : "john_doe",
-                    "timestamp"   : "June 05,2019 7:15:42 PM"
                 }
 
             ]

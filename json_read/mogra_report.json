@@ -1,42 +1,42 @@
 {
-    "mogra_report":
+    "mogra_report" :
     {
-        "network_map":
+        "network_map" :
         {
-            "connections":
+            "connections" :
             [
                 {
                     "end_point_1" : "192.168.1.105",
                     "end_point_2" : "192.168.1.122",
                     "pay_load_type" : "http",
-                    "traffic_level" : "4",
+                    "traffic_level" : "4"
                 },
 
                 {
                     "end_point_1" : "192.168.1.105",
                     "end_point_2" : "192.168.1.124",
-                    "traffic_level" : "3",
+                    "traffic_level" : "3"
                 },
 
                 {
                     "end_point_1" : "20.1.22.173",
                     "end_point_2" : "192.168.1.115",
                     "pay_load_type" : "unknown",
-                    "traffic_level" : "2",
+                    "traffic_level" : "2"
                 },
 
                 {
                     "end_point_1" : "192.168.1.105",
                     "end_point_2" : "192.168.1.112",
                     "pay_load_type" : "proprietary",
-                    "traffic_level" : "0",
+                    "traffic_level" : "0"
                 },
 
                 {
                     "end_point_1" : "192.168.1.105",
                     "end_point_2" : "192.168.1.117",
                     "pay_load_type" : "proprietary",
-                    "traffic_level" : "0",
+                    "traffic_level" : "0"
                 }
 
             ]
